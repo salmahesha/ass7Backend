@@ -1,0 +1,157 @@
+Question 1
+==========
+db.createCollection("books", {
+  validator: {
+    $jsonSchema: {
+      required: ["title"]
+    }
+  }
+})
+==============================================
+
+Question 2
+==========
+db.authors.insertOne(
+  {name: "Author1",
+  nationality: "British"}
+)
+===============================================
+
+Question 3
+==========
+db.createCollection( "log", { capped: true, size: 100000 } )
+==============================================
+
+Question 4
+==========
+db.books.createIndex({title:1})
+==============================================
+
+Question 5
+==========
+db.books.insertOne({
+  title:"Book1",
+  author: "Ali",
+  year:1937,
+  genres:["Fantasy" , "Adventure"]
+})
+==============================================
+
+Question 6
+==========
+db.books.insertMany([
+  {
+    title: "future",
+    author: "George Orweil",
+    year : 2020,
+    generes : ["Science Fiction"]
+  },
+  {
+    title: "To Kill Mockingbird",
+    author: "Herper Lee",
+    year : 1960,
+    generes : [ "Classic", "Fiction"]
+  },
+  {
+    title: "Bracve New World",
+    author: "Aldous Huxley",
+    year : 2006,
+    generes : ["Dysopian" , "Science Fication"]
+  }
+  
+])
+==============================================
+
+Question 7
+==========
+db.logs.insertOne({
+  book_id: "6988dcd2228c9e40c7f762e5",
+  action : "borrowed"
+})
+================================================
+
+Question 8
+==========
+db.books.updateOne({title:"future"} , {$set:{year:2022}})
+==================================================================
+
+Question 9
+==========
+db.books.find({title:"Brave New World"})
+==================================================================
+
+Question 10
+==========
+db.books.find({year:{ $lt:2010, $gt:1991 }})
+==================================================================
+
+Question 11
+==========
+db.books.find({
+  generes: "Science Fiction"
+})
+==================================================================
+
+Question 12
+==========
+db.books.find().skip(2).limit(3).sort({year:1})
+==================================================================
+
+Question 13
+==========
+db.books.find({year:{$type:"int"}})
+==================================================================
+
+Question 14
+==========
+db.books.find({
+  generes: { $nin: ["Horror", "Science Fiction"] }
+})
+==================================================================
+
+Question 15
+==========
+db.books.deleteMany({year:{$lt:2000}})
+==================================================================
+
+Question 16
+==========
+db.books.aggregate([
+  {$match:{year:{$gt:2000}}},
+  {$sort:{year:1}}
+])
+==================================================================
+
+Question 17
+==========
+db.books.aggregate([
+  {$match:{year:{$gt:2000}}},
+  {$project:{title:1 , author: 1 , year:1}}
+])
+==================================================================
+
+Question 18
+==========
+db.books.aggregate([
+  {$unwind:"$generes"}
+])
+==================================================================
+
+Question 19
+==========
+db.logs.aggregate([
+  {
+    $lookup: {
+
+      from: "books",
+
+      localField: "book_id",
+
+      foreignField: "_id",
+
+      as: "Book_details"
+    }
+  }
+])
+==================================================================
+
